@@ -39,8 +39,8 @@ public class QuizResource {
 
     // @GetMapping("/quiz")
     // public String showQuiz(Model model) {
-    //     model.addAttribute("quizStarted", false);
-    //     return "quiz";
+    // model.addAttribute("quizStarted", false);
+    // return "quiz";
     // }
 
     @PostMapping("/startQuiz")
@@ -56,25 +56,21 @@ public class QuizResource {
     }
 
     @PostMapping("/quiz")
-    public String submitQuizAnswer(@RequestParam("answer") String answer, Model model) {
-        // Process the submitted answer and move to the next question
-        // ...
-        Integer currentIndex = (Integer) model.getAttribute("currentQuestionIndex");
-        // Integer nextQuestion = currentIndex++;
+    public String submitQuizAnswer(@RequestParam("answer") String answer,
+            @RequestParam("currentIndex") String currentIndex, Model model) {
+
         List<Quiz> quizQuestions = quizService.getAllQuestions();
 
-        if (currentIndex != null && currentIndex + 1 < quizQuestions.size()) {
-            model.addAttribute("currentQuestionIndex", currentIndex++);
-            model.addAttribute("currentQuestion", quizQuestions.get(currentIndex++));
-
-            if (currentIndex + 1 == quizQuestions.size()) {
-                model.addAttribute("quizCompleted", true);
-                // Calculate and set the score
-                // model.addAttribute("score", calculateScore());
-            }
+        int tempCurrentIndex = Integer.parseInt(currentIndex);
+        model.addAttribute("quizStarted", true);
+        
+        if(tempCurrentIndex < quizQuestions.size()) {
+            model.addAttribute("currentQuestion", quizQuestions.get(tempCurrentIndex));
+            model.addAttribute("currentQuestionIndex", tempCurrentIndex);
+        } else {
+            model.addAttribute("quizCompleted", true);
+             model.addAttribute("score", 2);
         }
-
         return "index";
-
     }
 }

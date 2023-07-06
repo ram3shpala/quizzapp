@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Quiz</title>
     <style>
@@ -55,38 +56,50 @@
         }
     </style>
 </head>
+
 <body>
     <div class="quiz-container" th:unless="${quizStarted}">
         <form th:action="@{/startQuiz}" method="POST">
             <button type="submit">Start Quiz</button>
         </form>
     </div>
-    
+
+
     <div class="quiz-container" th:if="${quizStarted}">
-        <h2 class="quiz-question" th:text="${currentQuestion.question}"></h2>
-        
-        <div class="quiz-options">
-            <label>
-                <input type="radio" th:name="answer" th:value="${currentQuestion.option1}" />
-                <span th:text="${currentQuestion.option1}"></span>
-            </label>
-            <label>
-                <input type="radio" th:name="answer" th:value="${currentQuestion.option2}" />
-                <span th:text="${currentQuestion.option2}"></span>
-            </label>
-            <label>
-                <input type="radio" th:name="answer" th:value="${currentQuestion.option3}" />
-                <span th:text="${currentQuestion.option3}"></span>
-            </label>
-            <label>
-                <input type="radio" th:name="answer" th:value="${currentQuestion.option4}" />
-                <span th:text="${currentQuestion.option4}"></span>
-            </label>
+        <div class="quiz-container" th:unless="${quizCompleted}">
+            <form th:action="@{/quiz}" method="post">
+                <h2 class="quiz-question" th:text="${currentQuestion.question}"></h2>
+
+                <div class="quiz-options">
+                    <label>
+                        <input type="radio" th:name="answer" th:value="${currentQuestion.option1}" />
+                        <span th:text="${currentQuestion.option1}"></span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="answer" th:value="${currentQuestion.option2}" />
+                        <span th:text="${currentQuestion.option2}"></span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="answer" th:value="${currentQuestion.option3}" />
+                        <span th:text="${currentQuestion.option3}"></span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="answer" th:value="${currentQuestion.option4}" />
+                        <span th:text="${currentQuestion.option4}"></span>
+                    </label>
+                </div>
+                <input type="hidden" th:name="currentIndex" th:value="${currentQuestion.id}" />
+                <div class="quiz-navigation">
+                    <button class="quiz-button" type="submit">Next</button>
+                </div>
+
+            </form>
         </div>
-    
-    <div th:if="${quizCompleted}">
-        <h2>Quiz Completed!</h2>
-        <p>Your score: <span th:text="${score}"></span></p>
+        <div th:if="${quizCompleted}">
+            <h2>Quiz Completed!</h2>
+            <p>Your score: <span th:text="${score}"></span></p>
+        </div>
     </div>
 </body>
+
 </html>
