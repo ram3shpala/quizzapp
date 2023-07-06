@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.quizapp.quiz.entity.Quiz;
 import com.quizapp.quiz.service.QuizService;
 
@@ -21,18 +24,57 @@ public class QuizResource {
         super();
         this.quizService = quizService;
     }
-    
+
     @ResponseBody
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/all")
-    public List<Quiz> getAllQuestions()
-    {
+    public List<Quiz> getAllQuestions() {
         return quizService.getAllQuestions();
     }
 
-    @GetMapping("/index")
-    public String getHome()
-    {
+    @GetMapping("/quiz/{id}")
+    public Quiz findQuestionById(@PathVariable("id") Long id) {
+        return quizService.findQuestionById(id);
+    }
+
+    // @GetMapping("/quiz")
+    // public String showQuiz(Model model) {
+    //     model.addAttribute("quizStarted", false);
+    //     return "quiz";
+    // }
+
+    @PostMapping("/startQuiz")
+    public String startQuiz(Model model) {
+        // Fetch quiz questions from the server or any other necessary logic
+        List<Quiz> quizQuestions = quizService.getAllQuestions();
+
+        model.addAttribute("quizStarted", true);
+        model.addAttribute("currentQuestion", quizQuestions.get(0));
+        model.addAttribute("currentQuestionIndex", 0);
+
         return "index";
+    }
+
+    @PostMapping("/quiz")
+    public String submitQuizAnswer(@RequestParam("answer") String answer, Model model) {
+        // Process the submitted answer and move to the next question
+        // ...
+        Integer currentIndex = (Integer) model.getAttribute("currentQuestionIndex");
+        // Integer nextQuestion = currentIndex++;
+        List<Quiz> quizQuestions = quizService.getAllQuestions();
+
+        if (currentIndex != null && currentIndex + 1 < quizQuestions.size()) {
+            model.addAttribute("currentQuestionIndex", currentIndex++);
+            model.addAttribute("currentQuestion", quizQuestions.get(currentIndex++));
+
+            if (currentIndex + 1 == quizQuestions.size()) {
+                model.addAttribute("quizCompleted", true);
+                // Calculate and set the score
+                // model.addAttribute("score", calculateScore());
+            }
+        }
+
+        return "index";
+
     }
 }

@@ -27,4 +27,9 @@ public class QuizServiceImpl implements QuizService{
         return StreamSupport.stream(this.quizRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
     
+    @Override
+    public Quiz findQuestionById(Long id)
+    {
+        return this.quizRepository.findById(id).orElse(null);
+    }
 }

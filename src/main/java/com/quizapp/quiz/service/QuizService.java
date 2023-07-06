@@ -6,4 +6,5 @@ import com.quizapp.quiz.entity.Quiz;
 
 public interface QuizService {
     public List<Quiz> getAllQuestions();
+    public Quiz findQuestionById(Long id);
 }
