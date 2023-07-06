@@ -1,4 +1,4 @@
-package com.kodekollab.quizapp.entity;
+package com.quizapp.quiz.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

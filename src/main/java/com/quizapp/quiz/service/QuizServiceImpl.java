@@ -1,4 +1,4 @@
-package com.kodekollab.quizapp.service;
+package com.quizapp.quiz.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,8 +7,8 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kodekollab.quizapp.entity.Quiz;
-import com.kodekollab.quizapp.repository.QuizRepository;
+import com.quizapp.quiz.entity.Quiz;
+import com.quizapp.quiz.repository.QuizRepository;
 
 @Service
 public class QuizServiceImpl implements QuizService{

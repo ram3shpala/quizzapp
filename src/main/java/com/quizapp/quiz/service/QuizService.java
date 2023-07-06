@@ -1,8 +1,8 @@
-package com.kodekollab.quizapp.service;
+package com.quizapp.quiz.service;
 
 import java.util.List;
 
-import com.kodekollab.quizapp.entity.Quiz;
+import com.quizapp.quiz.entity.Quiz;
 
 public interface QuizService {
     public List<Quiz> getAllQuestions();

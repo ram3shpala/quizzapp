@@ -1,4 +1,4 @@
-package com.kodekollab.quizapp.entity;
+package com.quizapp.quiz.entity;
 
 public record User(String userString, String emailString) {
     public User {
