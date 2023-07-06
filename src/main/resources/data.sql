@@ -1,0 +1,3 @@
+INSERT INTO QUIZ (question, Option1, Option2, Option3,Option4, answer) VALUES ('Question 1', 'Option1', 'Option2', 'Option3','Option4','Option1')
+INSERT INTO QUIZ (question, Option1, Option2, Option3,Option4, answer) VALUES ('Question 2', 'Option21', 'Option22', 'Option23','Option24','Option22')
+INSERT INTO QUIZ (question, Option1, Option2, Option3,Option4, answer) VALUES ('Question 3', 'Option31', 'Option32', 'Option33','Option34','Option31')
