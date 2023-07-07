@@ -1,24 +1,19 @@
 pipeline { 
     agent any 
-    options {
-        skipStagesAfterUnstable()
-    }
     stages {
         stage('Build') { 
             steps { 
-                sh echo 'Building...'
-                sleep(secs: 5, unit: 'SECONDS')
+                sh 'Building...'
             }
         }
         stage('Test'){
             steps {
-                sh echo 'Testing...'
-                
+                sh 'Testing...'
             }
         }
         stage('Deploy') {
             steps {
-                sh echo 'Deploying...'
+                sh 'Deploying...'
             }
         }
     }
