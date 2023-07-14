@@ -3,6 +3,8 @@
 
 <head>
     <title>Quiz</title>
+
+
     <style>
         /* CSS styles for quiz layout */
 
@@ -57,9 +59,12 @@
             cursor: pointer;
         }
 
-        .quiz-button:hover {
-            background-color: #45a049;
+        .quiz-button:disabled {
+            opacity: 0.5;
+            background-color: #c6c2c2;
+            cursor: not-allowed;
         }
+
 
         .quiz-finish {
             background-color: #f44336;
@@ -99,43 +104,43 @@
 
     <div class="quiz-container" th:if="${quizStarted}">
         <div th:unless="${quizCompleted}">
-            <form th:action="@{/quiz}" method="post">
+            <form th:action="@{/quiz}" method="post" id="quiz-form">
                 <div>
-                    <p class="quiz-question" th:text="'Question '+${currentQuestion.id}+'. '+${currentQuestion.question}"></p>
-                    <hr
-                </div>
-                <div>
-                    
-                </div>
+                    <p class="quiz-question"
+                        th:text="'Question '+${currentQuestion.id}+'. '+${currentQuestion.question}"></p>
+                    <hr </div>
+                    <div>
 
-                <div class="quiz-options">
-                    <label>
-                        <input type="radio" th:name="answer" th:value="${currentQuestion.option1}" />
-                        <span th:text="${currentQuestion.option1}"></span>
-                    </label>
-                    <label>
-                        <input type="radio" th:name="answer" th:value="${currentQuestion.option2}" />
-                        <span th:text="${currentQuestion.option2}"></span>
-                    </label>
-                    <label>
-                        <input type="radio" th:name="answer" th:value="${currentQuestion.option3}" />
-                        <span th:text="${currentQuestion.option3}"></span>
-                    </label>
-                    <label>
-                        <input type="radio" th:name="answer" th:value="${currentQuestion.option4}" />
-                        <span th:text="${currentQuestion.option4}"></span>
-                    </label>
-                </div>
-                <input type="hidden" th:name="currentIndex" th:value="${currentQuestion.id}" />
-                <input type="hidden" th:name="score" th:value="${score}" />
-                <div class="quiz-navigation">
-                    <div th:if="${lastQuestion}">
-                        <button class="quiz-button" type="submit">Finish</button>
                     </div>
-                    <div th:if="${not lastQuestion}">
-                        <button class="quiz-button" type="submit">Next</button>
+
+                    <div class="quiz-options">
+                        <label>
+                            <input type="radio" th:name="answer" th:value="${currentQuestion.option1}" />
+                            <span th:text="${currentQuestion.option1}"></span>
+                        </label>
+                        <label>
+                            <input type="radio" th:name="answer" th:value="${currentQuestion.option2}" />
+                            <span th:text="${currentQuestion.option2}"></span>
+                        </label>
+                        <label>
+                            <input type="radio" th:name="answer" th:value="${currentQuestion.option3}" />
+                            <span th:text="${currentQuestion.option3}"></span>
+                        </label>
+                        <label>
+                            <input type="radio" th:name="answer" th:value="${currentQuestion.option4}" />
+                            <span th:text="${currentQuestion.option4}"></span>
+                        </label>
                     </div>
-                </div>
+                    <input type="hidden" th:name="currentIndex" th:value="${currentQuestion.id}" />
+                    <input type="hidden" th:name="score" th:value="${score}" />
+                    <div class="quiz-navigation">
+                        <div th:if="${lastQuestion}">
+                            <button class="quiz-button" type="submit" disabled id="submit-button">Finish</button>
+                        </div>
+                        <div th:if="${not lastQuestion}">
+                            <button class="quiz-button" type="submit" disabled id="submit-button">Next</button>
+                        </div>
+                    </div>
 
             </form>
         </div>
@@ -144,6 +149,16 @@
             <h3>Your score: <span th:text="${score}"></span></h3>
         </div>
     </div>
+
+    <script>
+        const form = document.getElementById('quiz-form');
+        const submitButton = document.getElementById('submit-button');
+
+        form.addEventListener('change', function () {
+            submitButton.disabled = false;
+        });
+
+    </script>
 </body>
 
 </html>
