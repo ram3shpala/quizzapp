@@ -37,39 +37,48 @@ public class QuizResource {
         return quizService.findQuestionById(id);
     }
 
-    // @GetMapping("/quiz")
-    // public String showQuiz(Model model) {
-    // model.addAttribute("quizStarted", false);
-    // return "quiz";
-    // }
-
     @PostMapping("/startQuiz")
     public String startQuiz(Model model) {
         // Fetch quiz questions from the server or any other necessary logic
         List<Quiz> quizQuestions = quizService.getAllQuestions();
 
         model.addAttribute("quizStarted", true);
+        model.addAttribute("lastQuestion", false);
         model.addAttribute("currentQuestion", quizQuestions.get(0));
         model.addAttribute("currentQuestionIndex", 0);
+        model.addAttribute("score", 0);
 
         return "index";
     }
 
     @PostMapping("/quiz")
     public String submitQuizAnswer(@RequestParam("answer") String answer,
-            @RequestParam("currentIndex") String currentIndex, Model model) {
+            @RequestParam("currentIndex") String currentIndex, @RequestParam("score") String score, Model model) {
 
         List<Quiz> quizQuestions = quizService.getAllQuestions();
 
         int tempCurrentIndex = Integer.parseInt(currentIndex);
         model.addAttribute("quizStarted", true);
+        model.addAttribute("lastQuestion", false);
+
+        if (tempCurrentIndex == (quizQuestions.size() - 1)) {
+            model.addAttribute("lastQuestion", true);
+        }
+        int tempScore = Integer.parseInt(score);
         
-        if(tempCurrentIndex < quizQuestions.size()) {
+        if (answer.equals(quizQuestions.get((tempCurrentIndex-1)).getAnswer())) {
+            tempScore++;
+        }
+        model.addAttribute("score", String.valueOf(tempScore));
+
+        if (tempCurrentIndex < quizQuestions.size()) {
             model.addAttribute("currentQuestion", quizQuestions.get(tempCurrentIndex));
             model.addAttribute("currentQuestionIndex", tempCurrentIndex);
         } else {
             model.addAttribute("quizCompleted", true);
-             model.addAttribute("score", 2);
+            double size = quizQuestions.size();
+            double finalScore = (tempScore/size)*100;
+            model.addAttribute("score", String.valueOf(finalScore)  + "%"  );
         }
         return "index";
     }

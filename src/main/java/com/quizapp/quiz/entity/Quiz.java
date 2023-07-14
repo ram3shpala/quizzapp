@@ -2,6 +2,7 @@ package com.quizapp.quiz.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @lombok.Data
 @lombok.AllArgsConstructor
@@ -25,6 +26,7 @@ public class Quiz {
     private String option3;
     @jakarta.persistence.Column(name = "option4")
     private String option4;
+    @NotBlank(message = "Answer is mandatory")
     @jakarta.persistence.Column(name = "answer")
     private String answer;
 }

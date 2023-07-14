@@ -5,21 +5,35 @@
     <title>Quiz</title>
     <style>
         /* CSS styles for quiz layout */
+
+        .quiz-init-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #02692a;
+            border: 3px solid #91e4b1;
+            border-radius: 5px;
+            background-color: #def0de;
+        }
+
         .quiz-container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            border: 1px solid #ccc;
+            border: 3px solid #91e4b1;
             border-radius: 5px;
+            background-color: #def0de;
         }
 
         .quiz-question {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #06662b;
         }
 
         .quiz-options {
+            padding-top: 5px;
             margin-bottom: 20px;
         }
 
@@ -54,21 +68,45 @@
         .quiz-finish:hover {
             background-color: #d32f2f;
         }
+
+        .button {
+            background-color: #0e6911;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-    <div class="quiz-container" th:unless="${quizStarted}">
+    <div class="quiz-init-container" th:unless="${quizStarted}">
+        <!--<img src="quiz.drawio.png" alt="Quiz" width="500" height="600">-->
+        <h1>Quiz App</h1>
+        <h3>Test your knowledge in this fun quiz!</h3>
+        <p>Click the button below to start the quiz.</p>
         <form th:action="@{/startQuiz}" method="POST">
-            <button type="submit">Start Quiz</button>
+            <button class="button" type="submit">Start Quiz</button>
         </form>
+        <h3>Good Luck!</h3>
     </div>
 
 
     <div class="quiz-container" th:if="${quizStarted}">
-        <div class="quiz-container" th:unless="${quizCompleted}">
+        <div th:unless="${quizCompleted}">
             <form th:action="@{/quiz}" method="post">
-                <h2 class="quiz-question" th:text="${currentQuestion.question}"></h2>
+                <div>
+                    <p class="quiz-question" th:text="'Question '+${currentQuestion.id}+'. '+${currentQuestion.question}"></p>
+                    <hr
+                </div>
+                <div>
+                    
+                </div>
 
                 <div class="quiz-options">
                     <label>
@@ -89,15 +127,21 @@
                     </label>
                 </div>
                 <input type="hidden" th:name="currentIndex" th:value="${currentQuestion.id}" />
+                <input type="hidden" th:name="score" th:value="${score}" />
                 <div class="quiz-navigation">
-                    <button class="quiz-button" type="submit">Next</button>
+                    <div th:if="${lastQuestion}">
+                        <button class="quiz-button" type="submit">Finish</button>
+                    </div>
+                    <div th:if="${not lastQuestion}">
+                        <button class="quiz-button" type="submit">Next</button>
+                    </div>
                 </div>
 
             </form>
         </div>
         <div th:if="${quizCompleted}">
             <h2>Quiz Completed!</h2>
-            <p>Your score: <span th:text="${score}"></span></p>
+            <h3>Your score: <span th:text="${score}"></span></h3>
         </div>
     </div>
 </body>
