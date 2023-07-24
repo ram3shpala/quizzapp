@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quizzapp-pod
+  labels:
+    app: quizzapp
+spec:
+  containers:
+    - name: quizzapp-container
+      image: rameshpala/quizzapp:1.0
+      ports:
+        - containerPort: 8080
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "500Mi"
+        limits:
+          cpu: "500m"
+          memory: "500Mi"
