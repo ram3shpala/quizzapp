@@ -1,6 +1,5 @@
-#create a docker file for my spring boot application
-# user openjdk 17 as base image
-FROM openjdk:17 as build    
+#Create a docker file for my spring boot application with maven java 17 as base image
+FROM maven:3.8.2-openjdk-17-slim as build
 # set the working directory
 WORKDIR /app
 # copy the pom.xml file
@@ -19,4 +18,3 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 # run the application
 ENTRYPOINT ["java","-jar","/app.jar"]
-
