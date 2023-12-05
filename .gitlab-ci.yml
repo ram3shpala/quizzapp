@@ -1,0 +1,43 @@
+stages:
+  - build
+  - dockerize
+
+variables:
+  DOCKER_DRIVER: overlay2
+  SPRING_PROFILES_ACTIVE: dev
+  IMAGE_NAME: quay.io/kodekollab/demo:01
+  # REGISTRY: docker.io
+  # DOCKERHUB_USERNAME: yourdockerhubusername
+  # DOCKERHUB_PASSWORD: yourdockerhubpassword
+
+build:
+  stage: build
+  image: maven:3.8.2-openjdk-17-slim
+  tags:
+    - gitlabrunner
+  script:
+    - mvn clean package -B
+  artifacts:
+    paths:
+    - target/
+    expire_in: 1 hours
+
+
+dockerize:
+  stage: dockerize
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  tags:
+    - gitlabrunner
+  script:
+    - echo "Building and pushing Docker image"
+    - echo "{\"auths\":{\"$REGISTRY_QUAY\":{\"username\":\"$REGISTRY_USER\",\"password\":\"$REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    #- echo "{\"auths\":{\"docker.io\":{\"auth\":\"${BASE64_ENCODED_AUTH}\"}}}" > /kaniko/.docker/config.json
+    #- cat /kaniko/.docker/config.json
+    - /kaniko/executor --context ${CI_PROJECT_DIR} --dockerfile ${CI_PROJECT_DIR}/Dockerfile --destination ${IMAGE_NAME}
+  artifacts:
+    paths: 
+    - target/
+    expire_in: 1 hours
+
