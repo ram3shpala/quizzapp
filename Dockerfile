@@ -22,7 +22,7 @@
 # For gitlab-ci
 
 FROM openjdk:17
-# WORKDIR /app
+WORKDIR /app
 # copy the jar file from the build stage
 COPY target/*.jar app.jar
 # expose port 8080
